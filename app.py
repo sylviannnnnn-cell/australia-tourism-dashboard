@@ -222,7 +222,7 @@ app.layout = html.Div([
     html.H1("Find the Best Australian Destination for HOLIDAY!", style={'textAlign': 'center'}),
     html.Div([
         # Most Popular State
-        html.Div(["Most Popular State:...... "], className="card",
+        html.Div(["Most Popular State: NSW "], className="card",
             style={'flex': '1', 'minWidth': '250px', 'textAlign': 'center', 'padding': '15px', 'boxSizing': 'border-box'}),
         
         # Most Expensive State
