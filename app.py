@@ -16,6 +16,7 @@ from pandas.api.types import CategoricalDtype
 
 
 app = Dash(__name__)
+server = app.server
 
 
 # In[102]:
@@ -621,10 +622,4 @@ def update_geographic_chart(length_type):
 # ========= Run Server =========
 if __name__ == '__main__':
     app.run(debug=True, port=8062)
-
-
-# In[ ]:
-
-
-
 
