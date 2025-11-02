@@ -364,7 +364,7 @@ app.layout = html.Div(
                 ],
                 value='Avg Daytrip Spend ($)',
                 clearable=False,
-                style={'width': '300px','color':'white'}
+                style={'width': '300px'}
             )
         ], style={ 'display': 'flex','justifyContent': 'flex-end','marginRight': '40px'}),
         html.Div([
@@ -388,7 +388,7 @@ app.layout = html.Div(
                 clearable=False,
                 style={'width': '300px'}
             )
-        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto','color':'white'}),
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto'}),
         html.Div([
             dcc.Graph(id='trip-amount-chart', style={"backgroundColor": "rgba(255, 255, 255, 0.6)",'width': '95%', 'margin': 'auto'})
         ]),
@@ -410,7 +410,7 @@ app.layout = html.Div(
                 clearable=False,
                 style={'width': '300px'}
             )
-        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto','color':'white'}),
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto'}),
         html.Div([
             dcc.Graph(id='geo-length-chart', style={'width': '95%', 'height': '600px', 'margin': 'auto'})
         ]),
@@ -690,5 +690,5 @@ def update_geographic_chart(length_type):
 
 # ========= Run Server =========
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8040)
 
