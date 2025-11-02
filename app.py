@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[100]:
+# In[569]:
 
 
 from dash import Dash, dcc, html, Input, Output
@@ -12,14 +12,14 @@ from pandas.api.types import CategoricalDtype
 
 # ### Data processing
 
-# In[101]:
+# In[570]:
 
 
 app = Dash(__name__)
 server = app.server
 
 
-# In[102]:
+# In[571]:
 
 
 # ========= rain and temp Data Loading =========
@@ -30,7 +30,7 @@ temp_min, temp_max = df['temp'].min(), df['temp'].max()
 rain_min, rain_max = df['rainfall'].min(), df['rainfall'].max()
 
 
-# In[103]:
+# In[572]:
 
 
 # ========= Trip Data Loading =========
@@ -87,7 +87,7 @@ CB_SAFE = {
 
 
 
-# In[104]:
+# In[573]:
 
 
 # ========= Trip Amount Data Processing =========
@@ -118,7 +118,7 @@ TRIP_COLORS = {
 }
 
 
-# In[105]:
+# In[574]:
 
 
 # ========= Trip Length Data Processing =========
@@ -160,7 +160,7 @@ def prepare_trip_length_data(length_type):
     return grouped, length_type, [LENGTH_COLORS[length_type]]
 
 
-# In[106]:
+# In[575]:
 
 
 # ========= Geographic Data Processing =========
@@ -197,7 +197,7 @@ def prepare_geographic_data(length_type):
     return grouped
 
 
-# In[107]:
+# In[576]:
 
 
 # ========= Axis styling =========
@@ -214,161 +214,220 @@ def style_axes(fig):
 
 # ### Layout
 
-# In[108]:
+# In[577]:
 
 
 # ========= Section 0:  Metric Cards =========
-app.layout = html.Div([
-    html.H1("Find the Best Australian Destination for HOLIDAY!", style={'textAlign': 'center'}),
-    html.Div([
-        # Most Popular State
-        html.Div(["Most Popular State: NSW "], className="card",
-            style={'flex': '1', 'minWidth': '250px', 'textAlign': 'center', 'padding': '15px', 'boxSizing': 'border-box'}),
-        
-        # Most Expensive State
-        html.Div([f"Most Expensive State: {most_expensive_state} (${most_expensive_value}/day)"], className="card", 
-            style={'flex': '1', 'minWidth': '250px', 'textAlign': 'center', 'padding': '15px', 'boxSizing': 'border-box'}),
-        
-        # Most Comfortable City
-        html.Div(["Most Comfortable City: Hobart"], className="card",
-            style={'flex': '1', 'minWidth': '250px', 'textAlign': 'center', 'padding': '15px', 'boxSizing': 'border-box'}),
-    ], style={'display': 'flex', 'justifyContent': 'space-around', 'margin': '20px'}),
-
+app.layout = html.Div(
+    style={
+        "backgroundImage": "url('/assets/bg.jpg')",
+        "backgroundSize": "cover",
+        "backgroundRepeat": "no-repeat",
+        "backgroundPosition": "center",
+        "minHeight": "100vh",
+        "padding": "20px"},
+    children=[
+        html.H1(
+            "Find the Best Australian Destination for HOLIDAY!",
+            style={
+                "width": "100%",
+                "backgroundColor": "#7FA6C9",
+                "padding": "15px 20px",
+                "textAlign": "center",
+                "borderRadius": "0",
+                "boxShadow": "0 4px 8px rgba(0,0,0,0.2)",
+                'color':'white'
+            }
+        ),
+        html.Div(
+                style={
+                    "display": "flex",
+                    "justifyContent": "space-around",
+                    "flexWrap": "wrap",
+                    "gap": "20px",
+                    "marginBottom": "30px"
+                },
+                children=[
+                    html.Div(
+                        [
+                            html.H3("Most Popular State"),
+                            html.P("NSW")
+                        ],
+                        style={
+                            "backgroundColor": "rgba(255, 255, 255, 0.6)",
+                            "borderRadius": "10px",
+                            "padding": "20px",
+                            "width": "220px",
+                            "textAlign": "center",
+                            "boxShadow": "0 4px 10px rgba(0,0,0,0.1)"
+                        }
+                    ),
+                    html.Div(
+                        [
+                            html.H3("Most Expensive State"),
+                            html.P("ACT")
+                        ],
+                        style={
+                            "backgroundColor": "rgba(255, 255, 255, 0.6)",
+                            "borderRadius": "10px",
+                            "padding": "20px",
+                            "width": "220px",
+                            "textAlign": "center",
+                            "boxShadow": "0 4px 10px rgba(0,0,0,0.1)"
+                        }
+                    ),
+                    html.Div(
+                        [
+                            html.H3("Most Comfortable City"),
+                            html.P("Hobart")
+                        ],
+                        style={
+                            "backgroundColor": "rgba(255, 255, 255, 0.6)",
+                            "borderRadius": "10px",
+                            "padding": "20px",
+                            "width": "220px",
+                            "textAlign": "center",
+                            "boxShadow": "0 4px 10px rgba(0,0,0,0.1)"
+                        }
+                    )
+                ]
+            ),
 # ========= Section 1:  Temp & Rain Layout =========
-    html.Div([
-        html.H2("1) 🌅 Choose your favorite WEATHER for destination!"),
         html.Div([
-            html.H4("Filter by Month:"),
-            dcc.Dropdown(
-                id='month-filter',
-                options=(
-                    [{'label': 'All Months', 'value': 'ALL'}] +
-                    [{'label': m, 'value': m} for m in df['Month'].dropna().unique()]),
-                placeholder="Select month...",
-                multi=True,
-                value=['ALL']
-            ),
-        ], style={'width': '45%', 'display': 'inline-block', 'padding': '0 20px'}),
+            html.H2("1) 🌅 Choose your favorite WEATHER for destination!"),
+            html.Div([
+                html.H4("Filter by Month:"),
+                dcc.Dropdown(
+                    id='month-filter',
+                    options=(
+                        [{'label': 'All Months', 'value': 'ALL'}] +
+                        [{'label': m, 'value': m} for m in df['Month'].dropna().unique()]),
+                    placeholder="Select month...",
+                    multi=True,
+                    value=['ALL']
+                ),
+            ], style={'width': '45%', 'display': 'inline-block', 'padding': '0 20px'}),
+                html.Div([
+                html.H4("Filter by City:"),
+                dcc.Dropdown(
+                    id='city-filter',
+                    options=(
+                        [{'label': 'All Cities', 'value': 'ALL'}] +
+                        [{'label': c, 'value': c} for c in sorted(df['City'].dropna().unique())]),
+                    multi=True,
+                    placeholder="Select one or more cities...",
+                    value=['ALL']
+                ),
+            ], style={'width': '45%', 'display': 'inline-block', 'padding': '0 20px'}),
+        ], style={'justifyContent': 'center'}),
         html.Div([
-            html.H4("Filter by City:"),
-            dcc.Dropdown(
-                id='city-filter',
-                options=(
-                    [{'label': 'All Cities', 'value': 'ALL'}] +
-                    [{'label': c, 'value': c} for c in sorted(df['City'].dropna().unique())]),
-                multi=True,
-                placeholder="Select one or more cities...",
-                value=['ALL']
+            html.H4("Filter by Temperature Range (°C):"),
+            dcc.RangeSlider(
+                id='temp-slider',
+                min=df['temp'].min(),
+                max=df['temp'].max(),
+                step=0.5,
+                value=[df['temp'].min(), df['temp'].max()],
+                marks={int(t): str(int(t)) for t in range(int(df['temp'].min()), int(df['temp'].max())+1, 5)},
+                tooltip={"placement": "bottom", "always_visible": True}
             ),
-        ], style={'width': '45%', 'display': 'inline-block', 'padding': '0 20px'}),
-    ], style={'display': 'flex', 'justifyContent': 'center'}),
-    html.Div([
-        html.H4("Filter by Temperature Range (°C):"),
-        dcc.RangeSlider(
-            id='temp-slider',
-            min=df['temp'].min(),
-            max=df['temp'].max(),
-            step=0.5,
-            value=[df['temp'].min(), df['temp'].max()],
-            marks={int(t): str(int(t)) for t in range(int(df['temp'].min()), int(df['temp'].max())+1, 5)},
-            tooltip={"placement": "bottom", "always_visible": True}
-        ),
-    ], style={'width': '90%', 'margin': '0 auto', 'padding': '20px 0'}),
-    html.Div([
-        html.H4("Filter by Rainfall Range (mm):"),
-        dcc.RangeSlider(
-            id='rain-slider',
-            min=df['rainfall'].min(),
-            max=df['rainfall'].max(),
-            step=0.5,
-            value=[df['rainfall'].min(), df['rainfall'].max()],
-            marks={int(r): str(int(r)) for r in range(int(df['rainfall'].min()), int(df['rainfall'].max())+1, 50)},
-            tooltip={"placement": "bottom", "always_visible": True}
-        ),
-    ], style={'width': '90%', 'margin': '0 auto', 'padding': '20px 0'}),
-    html.Br(),
-    html.Div(id='metric-cards', style={'display': 'flex', 'justifyContent': 'center', 'gap': '40px'}),
-    html.Br(),
-    dcc.Graph(id='temp-chart'),
+        ], style={'width': '90%', 'margin': '0 auto', 'padding': '20px 0'}),
+        html.Div([
+            html.H4("Filter by Rainfall Range (mm):"),
+            dcc.RangeSlider(
+                id='rain-slider',
+                min=df['rainfall'].min(),
+                max=df['rainfall'].max(),
+                step=0.5,
+                value=[df['rainfall'].min(), df['rainfall'].max()],
+                marks={int(r): str(int(r)) for r in range(int(df['rainfall'].min()), int(df['rainfall'].max())+1, 50)},
+                tooltip={"placement": "bottom", "always_visible": True}
+            ),
+        ], style={'width': '90%', 'margin': '0 auto', 'padding': '20px 0'}),
+        html.Br(),
+        html.Div(id='metric-cards', style={'display': 'flex', 'justifyContent': 'center', 'gap': '40px'}),
+        html.Br(),
+        dcc.Graph(id='temp-chart'),
 
 # ========= Section 2:  Spend Layout =========
-    html.H2("2) 💰 Average Spend per Day",
-            style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold'}),
-    html.Div([
-        html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px'}),
-        dcc.Dropdown(
-            id='spend-type-dd',
-            options=[
-                {'label': 'Daytrip Spend', 'value': 'Avg Daytrip Spend ($)'},
-                {'label': 'Overnight Spend', 'value': 'Avg Overnight Spend ($)'},
-                {'label': 'Overnight Intrastate Spend', 'value': 'Avg Overnight Intrastate Spend ($)'},
-                {'label': 'All Types', 'value': 'All'}
-            ],
-            value='Avg Daytrip Spend ($)',
-            clearable=False,
-            style={'width': '300px'}
-        )
-    ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto'}),
-    html.Div([
-        dcc.Graph(id='spend-chart', style={'width': '95%', 'margin': 'auto'})
-    ]),
+        html.H2("2) 💰 Average Spend per Day",
+                style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold','color':'white'}),
+        html.Div([
+            html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px','color':'white'}),
+            dcc.Dropdown(
+                id='spend-type-dd',
+                options=[
+                    {'label': 'Daytrip Spend', 'value': 'Avg Daytrip Spend ($)'},
+                    {'label': 'Overnight Spend', 'value': 'Avg Overnight Spend ($)'},
+                    {'label': 'Overnight Intrastate Spend', 'value': 'Avg Overnight Intrastate Spend ($)'},
+                    {'label': 'All Types', 'value': 'All'}
+                ],
+                value='Avg Daytrip Spend ($)',
+                clearable=False,
+                style={'width': '300px','color':'white'}
+            )
+        ], style={ 'display': 'flex','justifyContent': 'flex-end','marginRight': '40px'}),
+        html.Div([
+            dcc.Graph(id='spend-chart', style={"backgroundColor": "rgba(255, 255, 255, 0.6)",'width': '95%', 'margin': 'auto'})
+        ]),
 
 
 # ========= Section 3: Trip Amount Layout =========
-    html.H2("3) 👥 Number of Trips by State",
-            style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold'}),
-    html.Div([
-        html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px'}),
-        dcc.Dropdown(
-            id='trip-amount-type-dd',
-            options=[
-                {'label': 'Daytrip Trips', 'value': 'Daytrip Trips'},
-                {'label': 'Overnight Trips', 'value': 'Overnight Trips'},
-                {'label': 'Both Trip Types', 'value': 'Both'}
-            ],
-            value='Daytrip Trips',
-            clearable=False,
-            style={'width': '300px'}
-        )
-    ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto'}),
-    html.Div([
-        dcc.Graph(id='trip-amount-chart', style={'width': '95%', 'margin': 'auto'})
-    ]),
+        html.H2("3) 👥 Number of Trips by State",
+                style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold','color':'white'}),
+        html.Div([
+            html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px'}),
+            dcc.Dropdown(
+                id='trip-amount-type-dd',
+                options=[
+                    {'label': 'Daytrip Trips', 'value': 'Daytrip Trips'},
+                    {'label': 'Overnight Trips', 'value': 'Overnight Trips'},
+                    {'label': 'Both Trip Types', 'value': 'Both'}
+                ],
+                value='Daytrip Trips',
+                clearable=False,
+                style={'width': '300px'}
+            )
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto','color':'white'}),
+        html.Div([
+            dcc.Graph(id='trip-amount-chart', style={"backgroundColor": "rgba(255, 255, 255, 0.6)",'width': '95%', 'margin': 'auto'})
+        ]),
 
 
 
 # ========= Section 4: Trip Length Layout =========
-    html.H2("4) 🌃Average Overnight Trip Length ",
-            style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold'}),
-    html.Div([
-        html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px'}),
-        dcc.Dropdown(
-            id='geo-length-type-dd',
-            options=[
-                {'label': 'Overnight Trip Length', 'value': 'Avg Overnight Trip Length (Nights)'},
-                {'label': 'Overnight Intrastate Trip Length', 'value': 'Avg Overnight Intrastate Trip Length (Nights)'}
-            ],
-            value='Avg Overnight Trip Length (Nights)',
-            clearable=False,
-            style={'width': '300px'}
-        )
-    ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto'}),
-    html.Div([
-        dcc.Graph(id='geo-length-chart', style={'width': '95%', 'height': '600px', 'margin': 'auto'})
-    ]),
+        html.H2("4) 🌃Average Overnight Trip Length ",
+                style={'textAlign': 'left', 'marginLeft': '40px', 'marginBottom': '0', 'fontWeight': 'bold','color':'white'}),
+        html.Div([
+            html.Label("Trip Type:", style={'fontWeight': 'bold', 'marginRight': '10px', 'fontSize': '16px'}),
+            dcc.Dropdown(
+                id='geo-length-type-dd',
+                options=[
+                    {'label': 'Overnight Trip Length', 'value': 'Avg Overnight Trip Length (Nights)'},
+                    {'label': 'Overnight Intrastate Trip Length', 'value': 'Avg Overnight Intrastate Trip Length (Nights)'}
+                ],
+                value='Avg Overnight Trip Length (Nights)',
+                clearable=False,
+                style={'width': '300px'}
+            )
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'flex-end', 'marginRight': '40px', 'marginLeft': 'auto','color':'white'}),
+        html.Div([
+            dcc.Graph(id='geo-length-chart', style={'width': '95%', 'height': '600px', 'margin': 'auto'})
+        ]),
 #Data Note:
-    html.Div([
-        html.Hr(),
-        html.Div("Data note: Tourism, weather and expenditure data are aggregated from Tourism Research Australia and Bureau of Meteorology.",
-                 style={'fontSize': '12px', 'color': '#555', 'textAlign': 'center',
-                        'backgroundColor': '#f9f9f9', 'padding': '10px', 'borderRadius': '8px'})
-    ], style={'marginTop': '30px'})
-])
+        html.Div([
+            html.Hr(),
+            html.Div("Data note: Tourism, weather and expenditure data are aggregated from Tourism Research Australia and Bureau of Meteorology.",
+                     style={'fontSize': '12px', 'color': '#555', 'textAlign': 'center',
+                            'backgroundColor': 'rgba(255, 255, 255, 0.6)', 'padding': '10px', 'borderRadius': '8px'})
+        ], style={'marginTop': '30px'}),
+    ]
+)
 
 
 # ### Callback
 
-# In[109]:
+# In[578]:
 
 
 # ========= Section 1:  Temp & Rain Callback =========
@@ -418,7 +477,10 @@ def update_dashboard(selected_cities, selected_month, temp_range, rain_range):
         title=f"Temperature vs Rainfall in {selected_month} (Filtered Temp {min_temp:.1f}°C–{max_temp:.1f}°C, Rain {min_rain:.1f}–{max_rain:.1f} mm)"
     )
     fig.update_traces(marker=dict(size=15))
-    fig.update_layout(xaxis_title="Temperature (°C)", yaxis_title="Rainfall (mm)")
+    fig.update_layout(xaxis_title="Temperature (°C)",
+                      yaxis_title="Rainfall (mm)",
+                      plot_bgcolor='rgba(255, 255, 255, 0.6)',
+                      paper_bgcolor='rgba(255, 255, 255, 0.6)')
     return fig, cards
 
 
@@ -453,7 +515,9 @@ def update_spend_chart(spend_label):
 
             fig.update_layout(
                 title=f"{spend_label} by State", yaxis_title="Average Spend per Day ($)",
-                xaxis_title="State", showlegend=False)
+                xaxis_title="State", showlegend=False,
+                plot_bgcolor='rgba(255, 255, 255, 0.3)',
+                paper_bgcolor='rgba(255, 255, 255, 0.3)')
 
             return style_axes(fig)
 
@@ -491,7 +555,9 @@ def update_spend_chart(spend_label):
 
         fig.update_layout(
             title="Average Daily Spend Comparison across Trip Types",
-            yaxis_title="Average Spend per Day ($)", xaxis_title="State", legend_title="Trip Type")
+            yaxis_title="Average Spend per Day ($)", xaxis_title="State", legend_title="Trip Type",
+            plot_bgcolor='rgba(255, 255, 255, 0.6)',
+            paper_bgcolor='rgba(255, 255, 255, 0.6)')
 
         return style_axes(fig)
 
@@ -499,7 +565,7 @@ def update_spend_chart(spend_label):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[110]:
+# In[579]:
 
 
 # ========= Section 3: Trip Amount Callback =========
@@ -538,7 +604,9 @@ def update_trip_amount_chart(trip_type):
             title=title, 
             yaxis_title=y_title,
             xaxis_title="State", 
-            showlegend=False)
+            showlegend=False,
+            plot_bgcolor='rgba(255, 255, 255, 0.3)',
+            paper_bgcolor='rgba(255, 255, 255, 0.3)')
 
         return style_axes(fig)
 
@@ -546,7 +614,7 @@ def update_trip_amount_chart(trip_type):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[111]:
+# In[580]:
 
 
 # ========= Section 4: Trip Length Callback =========
@@ -596,7 +664,8 @@ def update_geographic_chart(length_type):
                 bgcolor='rgba(0,0,0,0)',
                 lakecolor='#0e9aa7',
                 landcolor='lightgray'
-            )
+            ),plot_bgcolor='rgba(255, 255, 255, 0.6)',
+            paper_bgcolor='rgba(255, 255, 255, 0.6)'
         )
         
         # Customize bubble appearance
@@ -616,7 +685,7 @@ def update_geographic_chart(length_type):
         return px.scatter_geo(title=f"❌ Error: {e}")
 
 
-# In[113]:
+# In[581]:
 
 
 # ========= Run Server =========
