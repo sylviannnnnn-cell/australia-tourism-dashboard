@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[569]:
+# In[40]:
 
 
 from dash import Dash, dcc, html, Input, Output
@@ -12,14 +12,14 @@ from pandas.api.types import CategoricalDtype
 
 # ### Data processing
 
-# In[570]:
+# In[41]:
 
 
 app = Dash(__name__)
 server = app.server
 
 
-# In[571]:
+# In[42]:
 
 
 # ========= rain and temp Data Loading =========
@@ -30,7 +30,7 @@ temp_min, temp_max = df['temp'].min(), df['temp'].max()
 rain_min, rain_max = df['rainfall'].min(), df['rainfall'].max()
 
 
-# In[572]:
+# In[43]:
 
 
 # ========= Trip Data Loading =========
@@ -87,7 +87,7 @@ CB_SAFE = {
 
 
 
-# In[573]:
+# In[44]:
 
 
 # ========= Trip Amount Data Processing =========
@@ -118,7 +118,7 @@ TRIP_COLORS = {
 }
 
 
-# In[574]:
+# In[45]:
 
 
 # ========= Trip Length Data Processing =========
@@ -160,7 +160,7 @@ def prepare_trip_length_data(length_type):
     return grouped, length_type, [LENGTH_COLORS[length_type]]
 
 
-# In[575]:
+# In[46]:
 
 
 # ========= Geographic Data Processing =========
@@ -197,7 +197,7 @@ def prepare_geographic_data(length_type):
     return grouped
 
 
-# In[576]:
+# In[47]:
 
 
 # ========= Axis styling =========
@@ -214,7 +214,7 @@ def style_axes(fig):
 
 # ### Layout
 
-# In[577]:
+# In[48]:
 
 
 # ========= Section 0:  Metric Cards =========
@@ -225,16 +225,16 @@ app.layout = html.Div(
         "backgroundRepeat": "no-repeat",
         "backgroundPosition": "center",
         "minHeight": "100vh",
-        "padding": "20px"},
+        "padding": "20px",
+        "margin": "0"
+    },
     children=[
         html.H1(
             "Find the Best Australian Destination for HOLIDAY!",
             style={
-                "width": "100%",
-                "backgroundColor": "#7FA6C9",
+                "backgroundColor": "rgb(127, 166, 201,0.6)",
                 "padding": "15px 20px",
                 "textAlign": "center",
-                "borderRadius": "0",
                 "boxShadow": "0 4px 8px rgba(0,0,0,0.2)",
                 'color':'white'
             }
@@ -427,7 +427,7 @@ app.layout = html.Div(
 
 # ### Callback
 
-# In[578]:
+# In[49]:
 
 
 # ========= Section 1:  Temp & Rain Callback =========
@@ -565,7 +565,7 @@ def update_spend_chart(spend_label):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[579]:
+# In[50]:
 
 
 # ========= Section 3: Trip Amount Callback =========
@@ -614,7 +614,7 @@ def update_trip_amount_chart(trip_type):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[580]:
+# In[51]:
 
 
 # ========= Section 4: Trip Length Callback =========
@@ -685,10 +685,10 @@ def update_geographic_chart(length_type):
         return px.scatter_geo(title=f"❌ Error: {e}")
 
 
-# In[581]:
+# In[52]:
 
 
 # ========= Run Server =========
 if __name__ == '__main__':
-    app.run(debug=True, port=8062)
+    app.run(debug=True)
 
