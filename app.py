@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[40]:
+# In[6]:
 
 
 from dash import Dash, dcc, html, Input, Output
@@ -12,29 +12,29 @@ from pandas.api.types import CategoricalDtype
 
 # ### Data processing
 
-# In[41]:
+# In[7]:
 
 
 app = Dash(__name__)
 server = app.server
 
 
-# In[42]:
+# In[8]:
 
 
 # ========= rain and temp Data Loading =========
-df=pd.read_csv('5010 rain and temp.csv', dtype={'City': str, 'Month': str})
+df=pd.read_csv('data/5010 rain and temp.csv', dtype={'City': str, 'Month': str})
 
 # ========= Calculate Max and Min of Temp and Rainfall =========
 temp_min, temp_max = df['temp'].min(), df['temp'].max()
 rain_min, rain_max = df['rainfall'].min(), df['rainfall'].max()
 
 
-# In[43]:
+# In[9]:
 
 
 # ========= Trip Data Loading =========
-df_trip = pd.read_csv('5010 trip.csv')
+df_trip = pd.read_csv('data/5010 trip.csv')
 df_trip.columns = df_trip.columns.str.strip()
 df_trip['State'] = df_trip['State'].astype(str).str.strip()
 
@@ -87,7 +87,7 @@ CB_SAFE = {
 
 
 
-# In[44]:
+# In[10]:
 
 
 # ========= Trip Amount Data Processing =========
@@ -118,7 +118,7 @@ TRIP_COLORS = {
 }
 
 
-# In[45]:
+# In[11]:
 
 
 # ========= Trip Length Data Processing =========
@@ -160,7 +160,7 @@ def prepare_trip_length_data(length_type):
     return grouped, length_type, [LENGTH_COLORS[length_type]]
 
 
-# In[46]:
+# In[12]:
 
 
 # ========= Geographic Data Processing =========
@@ -197,7 +197,7 @@ def prepare_geographic_data(length_type):
     return grouped
 
 
-# In[47]:
+# In[13]:
 
 
 # ========= Axis styling =========
@@ -214,7 +214,7 @@ def style_axes(fig):
 
 # ### Layout
 
-# In[48]:
+# In[14]:
 
 
 # ========= Section 0:  Metric Cards =========
@@ -427,7 +427,7 @@ app.layout = html.Div(
 
 # ### Callback
 
-# In[49]:
+# In[15]:
 
 
 # ========= Section 1:  Temp & Rain Callback =========
@@ -565,7 +565,7 @@ def update_spend_chart(spend_label):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[50]:
+# In[16]:
 
 
 # ========= Section 3: Trip Amount Callback =========
@@ -614,7 +614,7 @@ def update_trip_amount_chart(trip_type):
         return px.bar(title=f"❌ Error: {e}")
 
 
-# In[51]:
+# In[17]:
 
 
 # ========= Section 4: Trip Length Callback =========
@@ -685,7 +685,7 @@ def update_geographic_chart(length_type):
         return px.scatter_geo(title=f"❌ Error: {e}")
 
 
-# In[52]:
+# In[18]:
 
 
 # ========= Run Server =========
